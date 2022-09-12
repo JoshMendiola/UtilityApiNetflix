@@ -39,11 +39,15 @@ public class CalculatorControllerTest {
 
     // Testing GET calculator/divide/?value1={value1}&value2={value2}
     @Test
-    public void shouldHandleDivideByZero() throws Exception {
+    public void shouldHandleDivideByZero() throws Exception
+    {
+        double expectedResult = 0;
+        String outputJson = mapper.writeValueAsString(expectedResult);
 
         mockMvc.perform(get("/calculator/divide/?value1=1&value2=0"))
                 .andDo(print())
-                .andExpect(status().is4xxClientError());
+                .andExpect(status().isOk())
+                .andExpect(content().json(outputJson));
     }
 
     // Testing GET calculator/square/{id}
