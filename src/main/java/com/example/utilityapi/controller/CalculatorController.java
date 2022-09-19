@@ -1,7 +1,10 @@
 package com.example.utilityapi.controller;
 
+import com.example.utilityapi.models.CustomErrorResponse;
+import com.example.utilityapi.controller.CalculatorExceptionHandler;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 public class CalculatorController {
@@ -25,11 +28,11 @@ public class CalculatorController {
     @ResponseStatus(value = HttpStatus.OK)
     public int square(@PathVariable int value)
     {
-        long squareValue = (value*value);
-        if(squareValue > Integer.MAX_VALUE)
+        long square = (long)value * (long)value;
+        if(square <= Integer.MAX_VALUE)
         {
-            throw new ArithmeticException("Error: Integer too large");
+            return value * value;
         }
-        return value * value;
+        throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Number too large");
     }
 }
