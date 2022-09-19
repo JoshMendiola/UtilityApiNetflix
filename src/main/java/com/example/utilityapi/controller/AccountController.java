@@ -3,6 +3,8 @@ package com.example.utilityapi.controller;
 import com.example.utilityapi.models.Account;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -25,6 +27,17 @@ public class AccountController {
     @ResponseStatus(value = HttpStatus.CREATED)
     public Account createAccount(@RequestBody Account account) {
 
+        for(Account checker: accountList)
+        {
+            if(checker.getUsername() == account.getUsername())
+            {
+                throw new ResponseStatusException(HttpStatus.CONFLICT,"Account username is already in use");
+            }
+        }
+        if(account.getPassword().length() > 10)
+        {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,"Password is too long (Limit: 10 characters)");
+        }
         account.setId(idCounter++);
         accountList.add(account);
 
