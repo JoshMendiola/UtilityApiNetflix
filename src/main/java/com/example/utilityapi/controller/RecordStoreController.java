@@ -3,6 +3,7 @@ package com.example.utilityapi.controller;
 import com.example.utilityapi.models.Record;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,11 @@ public class RecordStoreController {
                 foundRecord = record;
                 break;
             }
+        }
+
+        if(foundRecord == null)
+        {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Record does not exist");
         }
 
         return foundRecord;
